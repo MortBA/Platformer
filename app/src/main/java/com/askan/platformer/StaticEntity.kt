@@ -2,6 +2,7 @@ package com.askan.platformer
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Matrix
 import android.graphics.Paint
 
 class StaticEntity(sprite: String, x: Float, y: Float): Entity() {
@@ -18,10 +19,9 @@ class StaticEntity(sprite: String, x: Float, y: Float): Entity() {
 
     }
 
-    override fun render(canvas: Canvas, paint: Paint) {
+    override fun render(canvas: Canvas, transform: Matrix, paint: Paint) {
         canvas.drawBitmap(bitmap,
-                engine.worldToScreenX(x).toFloat(),
-                engine.worldToScreenY(y).toFloat(),
+                transform,
                 paint
             )
     }

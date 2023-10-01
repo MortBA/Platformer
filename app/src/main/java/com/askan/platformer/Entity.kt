@@ -1,6 +1,7 @@
 package com.askan.platformer
 
 import android.graphics.Canvas
+import android.graphics.Matrix
 import android.graphics.Paint
 
 abstract class Entity {
@@ -14,7 +15,7 @@ abstract class Entity {
     }
 
     open fun update(dt: Float) {}
-    open fun render(canvas: Canvas, paint: Paint) {}
+    open fun render(canvas: Canvas, transform: Matrix, paint: Paint) {}
     open fun onCollision(that: Entity) {} //notify the Entity about collisions
     open fun destroy() {}
     open fun respawn() {}

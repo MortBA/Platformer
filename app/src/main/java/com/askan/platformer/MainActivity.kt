@@ -1,21 +1,23 @@
 package com.askan.platformer
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var game : Game
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        startGame()
+        game = Game(this)
+        setContentView(game)
     }
 
-    fun startGame() {
-        findViewById<Button>(R.id.startGameButton)?.setOnClickListener {
-            val intent = Intent(this, Game::class.java)
-            startActivity(intent)
-        }
+    override fun onPause() {
+        game.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        game.resume()
     }
 }
