@@ -1,9 +1,13 @@
 package com.askan.platformer
 
+import kotlin.properties.Delegates
+
 class LevelManager(level: LevelData) {
     val entities = ArrayList<Entity>()
+    lateinit var player : Player
     val entitiesToAdd = ArrayList<Entity>()
     val entitiesToRemove = ArrayList<Entity>()
+    var levelHeight = 0
 
     init {
         loadAssets(level)
@@ -13,12 +17,22 @@ class LevelManager(level: LevelData) {
         for (e in entities) {
             e.update(dt)
         }
-        //check collisions
+        doCollisionChecks()
         addAndRemoveEntities()
     }
 
+    private fun doCollisionChecks() {
+        for (e in entities) {
+            if (e == player) {continue}
+            if (isColliding(player, e)) {
+                player.onCollision(e)
+                e.onCollision(player)
+            }
+        }
+    }
+
     private fun loadAssets(level: LevelData) {
-        val levelHeight = level.getHeight()
+        levelHeight = level.getHeight()
         val levelWidth = level.getWidth()
         for (y in 0 until levelHeight) {
             val row = level.getRow(y)
@@ -33,11 +47,12 @@ class LevelManager(level: LevelData) {
     }
 
     private fun createEntity(spriteName: String, x: Int, y: Int) {
-        addEntity(StaticEntity(spriteName, x.toFloat(), y.toFloat()))
+
         if (spriteName.equals(PLAYER, ignoreCase = true)) {
-            //addEntity(Player())
+            player = Player(spriteName, x.toFloat(), y.toFloat())
+            addEntity(player)
         }else {
-            //addEntity(StaticEntity())
+            addEntity(StaticEntity(spriteName, x.toFloat(), y.toFloat()))
         }
     }
 

@@ -5,8 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
-import android.graphics.Point
+import android.graphics.PointF
 import android.os.SystemClock.uptimeMillis
+import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -15,10 +16,12 @@ import java.util.Random
 const val PIXELS_PER_METER = 50
 const val METERS_TO_SHOW_X = 20f
 const val METERS_TO_SHOW_Y = 0F
+const val GRAVITY = 40f
+const val NANO_TO_SECONDS = 1.0f/1000000000f
 val RNG = Random(uptimeMillis())
 lateinit var engine: Game
 val paint = Paint()
-class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Callback{
+class Game(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), Runnable, SurfaceHolder.Callback {
     private val TAG: String = "Game"
     private val stageHeight = getScreenHeight()/2
     private val stageWidth = getScreenWidth()/2
@@ -34,10 +37,14 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
     @Volatile
     private var isRunning = false
     private var isGameOver = false
-    private var levelManager = LevelManager(TestLevel())
     val camera = Viewport(stageWidth, stageHeight, METERS_TO_SHOW_X, METERS_TO_SHOW_Y)
+    val pool = BitmapPool(this)
+    private var levelManager = LevelManager(TestLevel())
     val transform = Matrix()
-    val position = Point()
+    val position = PointF()
+    var inputs = InputManager()
+
+    fun worldHeight() = levelManager.levelHeight
 
     fun worldToScreenX(worldDistance: Float) = (worldDistance * PIXELS_PER_METER).toInt()
     fun worldToScreenY(worldDistance: Float) = (worldDistance * PIXELS_PER_METER).toInt()
@@ -46,13 +53,17 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
 
 
     override fun run() {
+        var lastFrame = System.nanoTime()
         while (isRunning) {
+            val deltaTime = (System.nanoTime() - lastFrame) * NANO_TO_SECONDS
+            lastFrame = System.nanoTime()
+            update(deltaTime)
             //calculate delta time
             //Update all entities with thee dt
             //provide controllers
             //add and remove entities
             //
-            update()
+
             buildVisibleSet()
             render(visibleEntities)
         }
@@ -67,8 +78,9 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
         }
     }
 
-    private fun update() {
-       //levelManager.update()
+    private fun update(deltaTime: Float) {
+       levelManager.update(deltaTime)
+        camera.lookAt(levelManager.player)
     }
 
     private fun render(visibleEntities: ArrayList<Entity>) {
@@ -120,7 +132,15 @@ class Game(context: Context) : SurfaceView(context), Runnable, SurfaceHolder.Cal
 
     fun getScreenHeight() = context.resources.displayMetrics.heightPixels
     fun getScreenWidth() = context.resources.displayMetrics.widthPixels
+    fun setControls(input: InputManager) {
+        inputs.onPause()
+        inputs.onStop()
+        inputs = input
+        inputs.onResume()
+        inputs.onStart()
+    }
 
+    fun getControls() = inputs
 
 
 }
