@@ -13,7 +13,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import java.util.Random
 
-const val PIXELS_PER_METER = 50
+//const val PIXELS_PER_METER = 50
 const val METERS_TO_SHOW_X = 20f
 const val METERS_TO_SHOW_Y = 0F
 const val GRAVITY = 40f
@@ -46,10 +46,10 @@ class Game(context: Context, attrs: AttributeSet? = null) : SurfaceView(context,
 
     fun worldHeight() = levelManager.levelHeight
 
-    fun worldToScreenX(worldDistance: Float) = (worldDistance * PIXELS_PER_METER).toInt()
-    fun worldToScreenY(worldDistance: Float) = (worldDistance * PIXELS_PER_METER).toInt()
-    fun screenToWorldX(pixelDistnace: Float) = (pixelDistnace/PIXELS_PER_METER).toFloat()
-    fun screenToWorldY(pixelDistnace: Float) = (pixelDistnace/PIXELS_PER_METER).toFloat()
+    fun worldToScreenX(worldDistance: Float) = (worldDistance * camera.pixelsPerMeterX).toInt()
+    fun worldToScreenY(worldDistance: Float) = (worldDistance * camera.pixelsPerMeterX).toInt()
+    fun screenToWorldX(pixelDistnace: Float) = (pixelDistnace/camera.pixelsPerMeterX).toFloat()
+    fun screenToWorldY(pixelDistnace: Float) = (pixelDistnace/camera.pixelsPerMeterX).toFloat()
 
 
     override fun run() {

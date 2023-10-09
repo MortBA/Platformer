@@ -10,7 +10,7 @@ class Viewport(
     val screenHeight: Int,
     metersToShowX: Float,
     metersToShowY: Float): Entity() {
-    private var pixelsPerMeterX = 0
+    var pixelsPerMeterX = 0
     private var pixelsPerMeterY = 0
     private val screenCenterX = screenWidth / 2
     private val screenCenterY = screenHeight / 2
