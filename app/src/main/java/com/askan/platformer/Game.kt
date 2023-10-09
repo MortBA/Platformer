@@ -11,6 +11,10 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.askan.platformer.entities.BitmapPool
+import com.askan.platformer.entities.Entity
+import com.askan.platformer.levels.LevelManager
+import com.askan.platformer.levels.TestLevel
 import java.util.Random
 
 //const val PIXELS_PER_METER = 50
@@ -26,6 +30,7 @@ class Game(context: Context, attrs: AttributeSet? = null) : SurfaceView(context,
     private val stageHeight = getScreenHeight()/2
     private val stageWidth = getScreenWidth()/2
     private val visibleEntities = ArrayList<Entity>()
+    private lateinit var UI: UI
     init {
         engine = this
         holder.addCallback(this)
@@ -93,6 +98,9 @@ class Game(context: Context, attrs: AttributeSet? = null) : SurfaceView(context,
             transform.postTranslate(position.x.toFloat(), position.y.toFloat())
             e.render(canvas, transform, paint)
         }
+
+        UI = UI(context, canvas, paint)
+        UI.renderHud(isGameOver, levelManager.timeInRun, levelManager.player.health, levelManager.coinsCollected, stageWidth, stageHeight)
 
         holder.unlockCanvasAndPost(canvas)
     }

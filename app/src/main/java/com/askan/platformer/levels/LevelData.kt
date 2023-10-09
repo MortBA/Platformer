@@ -1,4 +1,4 @@
-package com.askan.platformer
+package com.askan.platformer.levels
 
 import android.util.SparseArray
 

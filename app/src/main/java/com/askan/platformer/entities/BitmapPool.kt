@@ -1,8 +1,9 @@
-package com.askan.platformer
+package com.askan.platformer.entities
 
 import android.graphics.Bitmap
 import android.util.Log
-import com.askan.platformer.BitmapUtils.loadScaledBitmap
+import com.askan.platformer.Game
+import com.askan.platformer.entities.BitmapUtils.loadScaledBitmap
 
 class BitmapPool(private val engine: Game) {
     val TAG = "BitmapPool"

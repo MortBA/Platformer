@@ -1,7 +1,7 @@
-package com.askan.platformer
+package com.askan.platformer.entities
 
-import android.speech.tts.TextToSpeech.Engine
 import androidx.core.math.MathUtils.clamp
+import com.askan.platformer.engine
 
 private const val MAX_DELTA = 0.48f
 open class DynamicEntity(sprite: String, x: Float, y: Float): StaticEntity(sprite, x, y) {

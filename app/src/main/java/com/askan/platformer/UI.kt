@@ -8,7 +8,7 @@ import android.graphics.Paint
 
 class UI(context: Context, canvas: Canvas, paint: Paint) {
 
- /*   private var textSize = 48f
+    private var textSize = 48f
     private var textMargin = 10f
     private var textColor = Color.WHITE
     private val context: Context
@@ -22,7 +22,7 @@ class UI(context: Context, canvas: Canvas, paint: Paint) {
         resources = context.resources
     }
 
-    fun renderHud(isGameOver: Boolean, distanceTraveled: Int, playerHealth : Int, playerAmmo: Int) {
+    fun renderHud(isGameOver: Boolean, distanceTraveled: Int, playerHealth : Int, playerAmmo: Int, stageWidth: Int, stageHeight: Int) {
 
         paint.color = textColor
         paint.textSize = textSize
@@ -30,22 +30,22 @@ class UI(context: Context, canvas: Canvas, paint: Paint) {
         if(!isGameOver) {
             gameplayHud(playerHealth, distanceTraveled, playerAmmo)
         }else {
-            restartUI()
+            restartUI(stageWidth, stageHeight)
         }
     }
 
-    private fun restartUI() {
+    private fun restartUI(stageWidth: Int, stageHeight: Int) {
         paint.textAlign = Paint.Align.CENTER
-        val centerX = STAGE_WIDTH/2f
-        val centerY = STAGE_HEIGHT/2f
+        val centerX = stageWidth/2f
+        val centerY = stageHeight/2f
         canvas.drawText(resources.getString(R.string.game_over), centerX, centerY, paint)
         canvas.drawText(resources.getString(R.string.restart), centerX, centerY+textSize, paint)
     }
 
-    private fun gameplayHud(playerHealth: Int, distanceTraveled: Int, playerAmmo: Int) {
+    private fun gameplayHud(playerHealth: Int, time: Int, coins: Int) {
         paint.textAlign = Paint.Align.LEFT
-        canvas.drawText("${resources.getString(R.string.health)} $playerHealth ${resources.getString(R.string.ammo)} $playerAmmo", textMargin, textSize, paint)
-        canvas.drawText("${resources.getString(R.string.traveled)} $distanceTraveled", textMargin, textSize*2, paint)
+        canvas.drawText("${resources.getString(R.string.health)} $playerHealth ${resources.getString(R.string.coins)} $coins", textMargin, textSize, paint)
+        canvas.drawText("${resources.getString(R.string.time)} $time", textMargin, textSize*2, paint)
     }
 
     fun setTextSize(size: Float) {
@@ -57,5 +57,5 @@ class UI(context: Context, canvas: Canvas, paint: Paint) {
 
     fun setTextColor(color: Int) {
         this.textColor = color
-    }*/
+    }
 }

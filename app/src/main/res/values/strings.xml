@@ -11,4 +11,6 @@
     <string name="delete">Delete</string>
     <string name="saved_scores">Saved Scores</string>
     <string name="scores">Scores</string>
+    <string name="coins">"Coins: "</string>
+    <string name="time">"Time: "</string>
 </resources>

@@ -1,10 +1,14 @@
-package com.askan.platformer
+package com.askan.platformer.entities
 
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
+import com.askan.platformer.GRAVITY
+import com.askan.platformer.InputManager
+import com.askan.platformer.engine
 
 const val PLAYER_RUN_SPEED = 6.0f //meters per second
+const val START_HEALTH = 3
 val PLAYER_JUMP_FORCE: Float = -(GRAVITY / 2f) //whatever feels good!
 val LEFT = 1.0f
 val RIGHT = -1.0f
@@ -12,6 +16,7 @@ class Player(spriteName: String, xpos: Float, ypos: Float) :
     DynamicEntity(spriteName, xpos, ypos) {
     val TAG = "Player"
     var facing = LEFT
+    var health = START_HEALTH
 
     override fun update(dt: Float) {
         val controls: InputManager = engine.getControls()

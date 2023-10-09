@@ -1,9 +1,10 @@
-package com.askan.platformer
+package com.askan.platformer.entities
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
+import com.askan.platformer.engine
 
 open class StaticEntity(sprite: String, x: Float, y: Float): Entity() {
     var bitmap: Bitmap

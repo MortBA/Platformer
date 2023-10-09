@@ -1,4 +1,4 @@
-package com.askan.platformer
+package com.askan.platformer.entities
 
 import android.graphics.Canvas
 import android.graphics.Matrix

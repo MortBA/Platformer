@@ -1,4 +1,4 @@
-package com.askan.platformer
+package com.askan.platformer.levels
 
 class TestLevel : LevelData() {
 

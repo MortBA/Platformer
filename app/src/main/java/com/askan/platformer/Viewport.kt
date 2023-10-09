@@ -1,10 +1,12 @@
 package com.askan.platformer
 
-import android.graphics.Point
 import android.graphics.PointF
-import android.graphics.RectF
+import android.util.Log
+import com.askan.platformer.entities.Entity
+import com.askan.platformer.entities.isColliding
 
 private const val OVERDRAW_BUFFER = 1f //draw this many meters beyond the viewport edges, to avoid visual gaps at the edge of the screen.
+private const val CAM_ACCELERATION = 1.001f
 class Viewport(
     val screenWidth: Int,
     val screenHeight: Int,
@@ -14,6 +16,10 @@ class Viewport(
     private var pixelsPerMeterY = 0
     private val screenCenterX = screenWidth / 2
     private val screenCenterY = screenHeight / 2
+    var velX = 1f
+    var velY = 1f
+    var camX = 0f
+    var camY = 0f
 
     init {
         setMetersToShow(metersToShowX, metersToShowY)
@@ -42,7 +48,25 @@ class Viewport(
     }
 
     fun lookAt(x: Float, y: Float) {
-        setCenter(x, y)
+        if (y - 100 < camY && y + 100 > camY)
+            velY = 1f
+        if (x - 100 < camX && x + 100 > camX)
+            velX = 1f
+
+        if (x < camX) {
+            camX -= velX * CAM_ACCELERATION
+        }else if (x > camX) {
+            camX += velX * CAM_ACCELERATION
+        }
+
+        if (y < camY) {
+            camY -= velY * CAM_ACCELERATION
+        }else if (y > camY) {
+            camY += velY * CAM_ACCELERATION
+        }
+        Log.v("Camera", "" + camX + " some: " + camY)
+        setCenter(camX, camY)
+
     }
 
     fun lookAt(e: Entity) {

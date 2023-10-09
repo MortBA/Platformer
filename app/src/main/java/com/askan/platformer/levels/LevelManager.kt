@@ -1,10 +1,15 @@
-package com.askan.platformer
+package com.askan.platformer.levels
 
-import kotlin.properties.Delegates
+import com.askan.platformer.entities.Entity
+import com.askan.platformer.entities.Player
+import com.askan.platformer.entities.StaticEntity
+import com.askan.platformer.entities.isColliding
 
 class LevelManager(level: LevelData) {
     val entities = ArrayList<Entity>()
     lateinit var player : Player
+    var coinsCollected = 0
+    var timeInRun = 0
     val entitiesToAdd = ArrayList<Entity>()
     val entitiesToRemove = ArrayList<Entity>()
     var levelHeight = 0
