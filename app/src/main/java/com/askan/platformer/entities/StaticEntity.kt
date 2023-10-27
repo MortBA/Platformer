@@ -20,9 +20,23 @@ open class StaticEntity(sprite: String, x: Float, y: Float): Entity() {
     }
 
     override fun render(canvas: Canvas, transform: Matrix, paint: Paint) {
+        paint.alpha = 255
         canvas.drawBitmap(bitmap,
                 transform,
                 paint
             )
+    }
+}
+class Trap(sprite: String, x: Float, y: Float): StaticEntity(sprite, x, y){
+    init {
+        height = 0.1f
+        width = 0.1f
+    }
+}
+
+class Flag(sprite: String, x: Float, y: Float): StaticEntity(sprite, x, y){
+    init {
+        height = 0.1f
+        width = 0.1f
     }
 }

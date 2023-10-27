@@ -6,12 +6,19 @@ import com.askan.platformer.entities.Entity
 import com.askan.platformer.entities.isColliding
 
 private const val OVERDRAW_BUFFER = 1f //draw this many meters beyond the viewport edges, to avoid visual gaps at the edge of the screen.
-private const val CAM_ACCELERATION = 1.001f
+private const val CAM_ACCELERATION = 0.05f
+private const val MAX_VEL = 5.6f
+
 class Viewport(
     val screenWidth: Int,
     val screenHeight: Int,
     metersToShowX: Float,
-    metersToShowY: Float): Entity() {
+    metersToShowY: Float
+): Entity() {
+    var yBoundryTop = 0f
+    var yBoundryBottom = 0f
+    var xBoundryEnd = 0f
+    var xBoundryStart = 0f
     var pixelsPerMeterX = 0
     private var pixelsPerMeterY = 0
     private val screenCenterX = screenWidth / 2
@@ -24,6 +31,13 @@ class Viewport(
     init {
         setMetersToShow(metersToShowX, metersToShowY)
         lookAt(2f, 0f)
+    }
+
+    fun setViewBoundry(xBoundryStart: Float, xBoundryEnd: Float, yBoundryTop: Float, yBoundryBottom: Float) {
+        this.xBoundryStart = xBoundryStart
+        this.xBoundryEnd = xBoundryEnd * pixelsPerMeterX
+        this.yBoundryTop = yBoundryTop
+        this.yBoundryBottom = yBoundryBottom * pixelsPerMeterY
     }
 
     //setMetersToShow calculates the number of physical pixels per meters
@@ -47,26 +61,54 @@ class Viewport(
         pixelsPerMeterY = (screenHeight / height).toInt()
     }
 
+    fun getPixelsPerMeter (): Int {
+        return this.pixelsPerMeterX
+    }
     fun lookAt(x: Float, y: Float) {
-        if (y - 100 < camY && y + 100 > camY)
-            velY = 1f
-        if (x - 100 < camX && x + 100 > camX)
-            velX = 1f
+        val xPixel = x * pixelsPerMeterX
+        val yPixel = y * pixelsPerMeterY
 
-        if (x < camX) {
-            camX -= velX * CAM_ACCELERATION
-        }else if (x > camX) {
-            camX += velX * CAM_ACCELERATION
+        if (yPixel - 5 < camY && yPixel + 5 > camY){
+            velY = 0f
+        }else if (yPixel < camY) {
+            if (velY == 0f) {
+                velY = 1f
+            }
+            if (velY < MAX_VEL)
+                velY += CAM_ACCELERATION
+            camY -= velY
+        }else if (yPixel > camY) {
+            if (velY == 0f) {
+                velY = 1f
+            }
+            if (velY < MAX_VEL)
+                velY += CAM_ACCELERATION
+            camY += velY
         }
 
-        if (y < camY) {
-            camY -= velY * CAM_ACCELERATION
-        }else if (y > camY) {
-            camY += velY * CAM_ACCELERATION
+        if (xPixel - 5 < camX && xPixel + 5 > camX){
+            velX = 0f
+        }else if (xPixel < camX) {
+            if (velX == 0f) {
+                velX = 1f
+            }
+            if (velX < MAX_VEL)
+                velX += CAM_ACCELERATION
+            camX -= velX
+        }else if (xPixel > camX) {
+            if (velX == 0f) {
+                velX = 1f
+            }
+            if (velX < MAX_VEL)
+                velX += CAM_ACCELERATION
+            camX += velX
         }
-        Log.v("Camera", "" + camX + " some: " + camY)
-        setCenter(camX, camY)
 
+
+        Log.v("BOUND", "" + xPixel + " somePixelChar: " + yPixel)
+        val boundVals = boundryCheck(camX, camY)
+        Log.v("BOUNDRY", "" + boundVals[0] + " some: " + boundVals[1])
+        setCenter(boundVals[0]/pixelsPerMeterX, boundVals[1]/pixelsPerMeterY)
     }
 
     fun lookAt(e: Entity) {
@@ -77,6 +119,25 @@ class Viewport(
         lookAt(pos.x, pos.y)
     }
 
+    fun boundryCheck(x: Float, y: Float): FloatArray {
+
+        var boundX = x
+        var boundY = y
+        if (x <= xBoundryStart) {
+            boundX = xBoundryStart
+        }
+        if (x >= xBoundryEnd) {
+            boundX = xBoundryEnd
+        }
+        if (y <= yBoundryTop) {
+            boundY = yBoundryTop
+        }
+        if (y >= yBoundryBottom) {
+            boundY = yBoundryBottom
+        }
+        Log.v("BOUNDRY", "The boundries X: " + xBoundryEnd  +" Y: "+ yBoundryTop)
+        return floatArrayOf(boundX, boundY)
+    }
     fun worldToScreenX(worldDistance: Float) = (worldDistance * pixelsPerMeterX)
     fun worldToScreenY(worldDistance: Float) = (worldDistance * pixelsPerMeterY)
 

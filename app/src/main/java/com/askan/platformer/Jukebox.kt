@@ -7,16 +7,15 @@ import android.media.SoundPool
 import android.util.Log
 import java.io.IOException
 object SFX{
-    var crashed = 0
-    var player_destroyed = 0
-    var engine_on = 0
-    var game_start = 0
-    var repair = 0
-    var ammo = 0
-    var shoot_1 = 0
-    var shoot_2 = 0
-    var shoot_3 = 0
-    var shootingList = ArrayList<Int>()
+    var invulnerable = 0
+    var hurt = 0
+    var strength = 0
+    var completionOne = 0
+    var completionTwo = 0
+    var coin = 0
+    var backgroundOne = 0
+    var backgroundTwo = 0
+    var dead = 0
 }
 ///todo: please make it so effects are placed in a queue to be played end of frame
 const val MAX_STREAMS = 3
@@ -38,19 +37,15 @@ class Jukebox(assetManager: AssetManager) {
             .setAudioAttributes(attr)
             .setMaxStreams(MAX_STREAMS)
             .build()
-        SFX.crashed = loadSound("SFX/hit.wav")
-        SFX.player_destroyed = loadSound("SFX/crashed.wav")
-        SFX.engine_on = loadSound("SFX/engineOn.wav")
-        SFX.game_start = loadSound("SFX/startGame.wav")
-        SFX.ammo = loadSound("SFX/ammo.wav")
-        SFX.repair = loadSound("SFX/repair.mp3")
-        SFX.shoot_1 = loadSound("SFX/shooting.wav")
-        SFX.shoot_2 = loadSound("SFX/shooting_1.wav")
-        SFX.shoot_3 = loadSound("SFX/shooting_2.wav")
-        SFX.shootingList.add(SFX.shoot_1)
-        SFX.shootingList.add(SFX.shoot_2)
-        SFX.shootingList.add(SFX.shoot_3)
-
+        SFX.backgroundOne = loadSound("SFX/background_one.wav")
+        SFX.backgroundTwo = loadSound("SFX/background_two.wav")
+        SFX.coin = loadSound("SFX/coin.wav")
+        SFX.completionOne = loadSound("SFX/completion_one.wav")
+        SFX.completionTwo = loadSound("SFX/completion_two.wav")
+        SFX.invulnerable = loadSound("SFX/invulnerable.wav")
+        SFX.strength = loadSound("SFX/strength.wav")
+        SFX.hurt = loadSound("SFX/hurt.wav")
+        SFX.dead = loadSound("SFX/dead.wav")
     }
 
     private fun loadSound(fileName: String): Int {
